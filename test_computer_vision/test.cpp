@@ -1,5 +1,10 @@
-#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/opencv_modules.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/highgui.hpp"
 
 int main() {
     // 1. Read the input image
@@ -8,9 +13,7 @@ int main() {
         std::cerr << "Error: Could not open or find the image!\n";
         return -1;
     }
-
-    std::cout << "Original image size: " 
-              << image.cols << " x " << image.rows << std::endl;
+    std::cout << "Original image size: " << image.cols << " x " << image.rows << std::endl;
 
     // 2. Define crop region (x, y, width, height)
     int x      = 50;
