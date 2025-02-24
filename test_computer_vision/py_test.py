@@ -27,7 +27,7 @@ def main():
     print("#2.5 DONE")
     # 3. Crop the image (Note: in Python, slicing order is [row, col] => [y, x])
     cropped_image = image[y:y+height, x:x+width]
-    print(f"Cropped image size: {cropped_image.shape[1]} x {cropped_image.shape[0]}")
+    print(f"Cropped image size: {cropped_image.shape[1]} x {cropped_image.shape[0]}")#needs fixing
     print("#3 DONE")
 
     # 4. Resize the cropped image
