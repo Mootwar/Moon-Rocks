@@ -6,6 +6,7 @@ import os
 import torch
 import torch.nn as nn
 from torchvision import datasets, models, transforms
+from torchvision.models import MobileNet_V2_Weights
 from torch.utils.data import DataLoader
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
@@ -14,7 +15,7 @@ from tqdm import tqdm
 BATCH_SIZE = 32
 NUM_EPOCHS = 20
 LEARNING_RATE = 1e-3
-IMAGE_SIZE = 100  # MobileNetV2 default input size change later to 640
+IMAGE_SIZE = 224  # MobileNetV2 default input size change later to 640
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 TRAIN_DIR = "train"
 TEST_DIR = "test"
@@ -34,7 +35,7 @@ train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 # Model setup
-model = models.mobilenet_v2(pretrained=True)
+model = models.mobilenet_v2(weights=MobileNet_V2_Weights.DEFAULT)
 num_classes = len(train_dataset.classes)
 model.classifier[1] = nn.Linear(model.last_channel, num_classes)
 model = model.to(DEVICE)
