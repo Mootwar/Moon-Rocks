@@ -5,7 +5,7 @@ os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 def main():
     # 1. Read the input image
-    image = cv2.imread("example.jpg")
+    image = cv2.imread("example3.jpg")
     if image is None:
         print("Error: Could not open or find the image!")
         sys.exit(1)
@@ -47,7 +47,7 @@ def main():
     print("#5 DONE")
 
     # 6. Save to disk (optional)
-    cv2.imwrite("output.jpg", cropped_image)
+    cv2.imwrite("output3.jpg", cropped_image)
     print("#6 DONE")
 if __name__ == "__main__":
     main()
