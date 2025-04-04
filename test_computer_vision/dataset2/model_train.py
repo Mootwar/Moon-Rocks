@@ -12,11 +12,12 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 
 # Config
-BATCH_SIZE = 32
-NUM_EPOCHS = 20
+BATCH_SIZE = 16
+NUM_EPOCHS = 12
 LEARNING_RATE = 1e-3
 IMAGE_SIZE = 224  # MobileNetV2 default input size change later to 640
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {DEVICE}")
 TRAIN_DIR = "train"
 TEST_DIR = "test"
 
