@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Rock Shop Inventory</title>
@@ -8,7 +9,9 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
     rel="stylesheet" 
   >
+  <link href="/styles.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -23,62 +26,73 @@
     <button id="fetch-minerals" class="btn btn-primary mb-3">Load Minerals</button>
 
     <!-- Table to display minerals -->
+    <!-- Table to display minerals -->
     <table class="table table-striped" id="minerals-table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Type</th>
-          <th>Cost</th>
-          <th>Weight</th>
-          <th>Location</th>
-          <th>Description</th>
-          <th>Qty</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>Gallery</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
+
     <!-- Form to add a new mineral -->
     <h2>Add New Mineral</h2>
-    <form id="add-mineral-form">
+    <form id="add-mineral-form" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="mineralName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="mineralName" required />
+        <input type="text" class="form-control" id="mineralName" name="name" required />
       </div>
       <div class="mb-3">
-        <label for="mineralType" class="form-label">Type</label>
-        <input type="text" class="form-control" id="mineralType" />
+        <label for="mineralPrice" class="form-label">Price</label>
+        <input type="number" step="0.01" class="form-control" id="mineralPrice" name="price" required />
       </div>
       <div class="mb-3">
-        <label for="mineralCost" class="form-label">Cost</label>
-        <input type="number" step="0.01" class="form-control" id="mineralCost" />
+        <label for="mineralAmount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="mineralAmount" name="amount" required />
       </div>
       <div class="mb-3">
-        <label for="mineralWeight" class="form-label">Weight</label>
-        <input type="number" step="0.01" class="form-control" id="mineralWeight" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralLocation" class="form-label">Location</label>
-        <input type="text" class="form-control" id="mineralLocation" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralDesc" class="form-label">Description</label>
-        <input type="text" class="form-control" id="mineralDesc" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralQty" class="form-label">Quantity</label>
-        <input type="number" class="form-control" id="mineralQty" value="0" />
+        <label for="mineralImage" class="form-label">Product Image</label>
+        <input type="file" class="form-control" id="mineralImage" name="photo" accept="image/*" />
       </div>
       <button class="btn btn-success" type="submit">Add Mineral</button>
     </form>
   </main>
 
-  <!-- Bootstrap JS (optional, for modals etc.) -->
+
+
+  <!-- Gallery Modal -->
+  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="galleryModalLabel">Product Images</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Gallery Grid -->
+          <div id="galleryGrid" class="row g-2"></div>
+          <hr>
+          <!-- Image Upload -->
+          <form id="imageUploadForm" enctype="multipart/form-data">
+            <input class="form-control" type="file" name="photo" accept="image/*" required>
+            <button class="btn btn-primary mt-2" type="submit">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
   </script>
-  <!-- Our custom scripts -->
+
   <script src="scripts.js"></script>
+
 </body>
 </html>

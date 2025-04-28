@@ -1,18 +1,29 @@
-CREATE TABLE IF NOT EXISTS minerals (
+-- enable pgvector once
+CREATE EXTENSION IF NOT EXISTS pgvector;
+
+CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  mineral_type TEXT,
-  cost NUMERIC(10,2),
-  weight NUMERIC(10,2),
-  location TEXT,
-  description TEXT,
-  quantity_in_stock INT DEFAULT 0,
-  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  name   TEXT NOT NULL,
+  price  NUMERIC(10,2) NOT NULL,
+  amount INTEGER NOT NULL
 );
 
--- starter data
-INSERT INTO minerals (name, mineral_type, cost, weight, location, description, quantity_in_stock)
-VALUES
-  ('Rose Quartz', 'Quartz', 12.5, 0.5, 'Aisle 2', 'Pink quartz variant', 10),
-  ('Amethyst', 'Quartz', 15.0, 0.3, 'Aisle 1', 'Purple crystal variety', 5)
-ON CONFLICT DO NOTHING;
+-- 1280-d vector = MobileNet-V2 output size
+CREATE TABLE IF NOT EXISTS images (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  image_path TEXT NOT NULL,
+  embedding  vector(1280) NOT NULL
+);
+
+-- HNSW index for fast similarity
+CREATE INDEX IF NOT EXISTS images_embedding_hnsw
+ON images
+USING hnsw (embedding vector_l2_ops);
+
+-- Insert some example products
+INSERT INTO products (name, price, amount)
+VALUES 
+('Amethyst Cluster', 45.99, 5),
+('Polished Tiger Eye', 15.50, 10),
+('Quartz Point', 22.00, 7);
