@@ -32,7 +32,7 @@ A portable **Node + PostgreSQL** stack that lets rock-shop owners catalog, searc
 ## 🚀 Quick-start
 
 ```bash
-git clone https://github.com/<your-org>/moon-rocks.git
+git clone https://github.com/Mootwar/Moon-Rocks.git
 cd moon-rocks/rockshop-app
 
 # Build & launch in background
