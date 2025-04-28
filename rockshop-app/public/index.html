@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Rock Shop Inventory</title>
+
   <!-- Bootstrap CSS -->
   <link 
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
     rel="stylesheet" 
   >
+  <link href="/styles.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
+
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Rock Shop</a>
     </div>
   </nav>
-  
+
+  <!-- Main Content -->
   <main class="container mt-4">
     <h1>Rock Shop Inventory</h1>
 
@@ -28,57 +35,48 @@
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Type</th>
-          <th>Cost</th>
-          <th>Weight</th>
-          <th>Location</th>
-          <th>Description</th>
-          <th>Qty</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>Image</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
+    <hr>
+
     <!-- Form to add a new mineral -->
     <h2>Add New Mineral</h2>
-    <form id="add-mineral-form">
+    <form id="add-mineral-form" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="mineralName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="mineralName" required />
+        <input type="text" class="form-control" id="mineralName" name="name" required />
       </div>
       <div class="mb-3">
-        <label for="mineralType" class="form-label">Type</label>
-        <input type="text" class="form-control" id="mineralType" />
+        <label for="mineralPrice" class="form-label">Price ($)</label>
+        <input type="number" step="0.01" class="form-control" id="mineralPrice" name="price" required />
       </div>
       <div class="mb-3">
-        <label for="mineralCost" class="form-label">Cost</label>
-        <input type="number" step="0.01" class="form-control" id="mineralCost" />
+        <label for="mineralAmount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="mineralAmount" name="amount" required />
       </div>
       <div class="mb-3">
-        <label for="mineralWeight" class="form-label">Weight</label>
-        <input type="number" step="0.01" class="form-control" id="mineralWeight" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralLocation" class="form-label">Location</label>
-        <input type="text" class="form-control" id="mineralLocation" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralDesc" class="form-label">Description</label>
-        <input type="text" class="form-control" id="mineralDesc" />
-      </div>
-      <div class="mb-3">
-        <label for="mineralQty" class="form-label">Quantity</label>
-        <input type="number" class="form-control" id="mineralQty" value="0" />
+        <label for="mineralImage" class="form-label">Product Image</label>
+        <input type="file" class="form-control" id="mineralImage" name="photo" accept="image/*" />
       </div>
       <button class="btn btn-success" type="submit">Add Mineral</button>
     </form>
+
   </main>
 
-  <!-- Bootstrap JS (optional, for modals etc.) -->
+  <!-- Bootstrap Bundle JS (includes Popper) -->
   <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
   </script>
-  <!-- Our custom scripts -->
-  <script src="scripts.js"></script>
+
+  <!-- Your custom script -->
+  <script src="/scripts.js"></script>
+
 </body>
+
 </html>

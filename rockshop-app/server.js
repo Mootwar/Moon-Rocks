@@ -1,25 +1,22 @@
-// server.js
-require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const routes = require('./routes');
-
 const app = express();
+const path = require('path');
+const routes = require('./routes');
+const multer = require('multer');
 
-// Use body-parser to parse JSON requests
-app.use(bodyParser.json());
+// Serve public files
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Use body-parser to parse URL-encoded form data
-app.use(bodyParser.urlencoded({ extended: true }));
+// Serve uploaded images
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve static files from the "public" folder (index.html, scripts.js, etc.)
-app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Mount your routes under "/api"
-app.use('/api', routes);
+// Use routes
+app.use("/", routes);
 
-// Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,18 +1,14 @@
+DROP TABLE IF EXISTS minerals;
+
 CREATE TABLE IF NOT EXISTS minerals (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  mineral_type TEXT,
-  cost NUMERIC(10,2),
-  weight NUMERIC(10,2),
-  location TEXT,
-  description TEXT,
-  quantity_in_stock INT DEFAULT 0,
-  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    amount INT NOT NULL,
+    photo TEXT
 );
 
--- starter data
-INSERT INTO minerals (name, mineral_type, cost, weight, location, description, quantity_in_stock)
-VALUES
-  ('Rose Quartz', 'Quartz', 12.5, 0.5, 'Aisle 2', 'Pink quartz variant', 10),
-  ('Amethyst', 'Quartz', 15.0, 0.3, 'Aisle 1', 'Purple crystal variety', 5)
-ON CONFLICT DO NOTHING;
+INSERT INTO minerals (name, price, amount, photo) VALUES
+('Quartz', 20.00, 1, 'Quartz_Brésil.jpg'),
+('Amethyst', 30.00, 2, NULL),
+('Agate', 15.00, 5, NULL);
