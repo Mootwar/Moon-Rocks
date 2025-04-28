@@ -36,4 +36,5 @@ git clone https://github.com/Mootwar/Moon-Rocks.git
 cd moon-rocks/rockshop-app
 
 # Build & launch in background
-docker compose up --build -d
+docker compose up --build // Add '-d' after '--build' to run in background. Use 'CTRL + C' to shutdown the docker when running not in the background
+docker compose down // Clean up the docker. Add '-v' after 'down' to fully delete the docker volumes so its a clean start, most important for the database

@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Rock Shop Inventory</title>
+
   <!-- Bootstrap CSS -->
   <link 
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
@@ -13,19 +14,21 @@
 </head>
 
 <body class="bg-light">
+
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Rock Shop</a>
     </div>
   </nav>
-  
+
+  <!-- Main Content -->
   <main class="container mt-4">
     <h1>Rock Shop Inventory</h1>
 
     <!-- Button to fetch minerals -->
     <button id="fetch-minerals" class="btn btn-primary mb-3">Load Minerals</button>
 
-    <!-- Table to display minerals -->
     <!-- Table to display minerals -->
     <table class="table table-striped" id="minerals-table">
       <thead>
@@ -34,12 +37,13 @@
           <th>Name</th>
           <th>Price</th>
           <th>Amount</th>
-          <th>Gallery</th>
+          <th>Image</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
+    <hr>
 
     <!-- Form to add a new mineral -->
     <h2>Add New Mineral</h2>
@@ -49,7 +53,7 @@
         <input type="text" class="form-control" id="mineralName" name="name" required />
       </div>
       <div class="mb-3">
-        <label for="mineralPrice" class="form-label">Price</label>
+        <label for="mineralPrice" class="form-label">Price ($)</label>
         <input type="number" step="0.01" class="form-control" id="mineralPrice" name="price" required />
       </div>
       <div class="mb-3">
@@ -62,37 +66,17 @@
       </div>
       <button class="btn btn-success" type="submit">Add Mineral</button>
     </form>
+
   </main>
 
-
-
-  <!-- Gallery Modal -->
-  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="galleryModalLabel">Product Images</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Gallery Grid -->
-          <div id="galleryGrid" class="row g-2"></div>
-          <hr>
-          <!-- Image Upload -->
-          <form id="imageUploadForm" enctype="multipart/form-data">
-            <input class="form-control" type="file" name="photo" accept="image/*" required>
-            <button class="btn btn-primary mt-2" type="submit">Upload</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- Bootstrap Bundle JS (includes Popper) -->
   <script 
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
   </script>
 
-  <script src="scripts.js"></script>
+  <!-- Your custom script -->
+  <script src="/scripts.js"></script>
 
 </body>
+
 </html>

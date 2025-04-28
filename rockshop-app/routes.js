@@ -1,108 +1,56 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const express = require("express");
 const router = express.Router();
-
-// Assume you have a database connection object called 'db'
-const { Pool } = require('pg');
+const multer = require("multer");
+const path = require("path");
+const { Pool } = require("pg");
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/yourdbname'
+  host: "db",       // Docker Compose service name
+  user: "postgres",
+  password: "postgrespw",
+  database: "rockshop_inventory_db",
+  port: 5432
 });
 
-// Configure multer for file uploads
-const upload = multer({ dest: 'uploads/' });
+// Set up file upload handling
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // timestamp + extension
+  }
+});
+const upload = multer({ storage });
 
-// Load all minerals
-router.get('/minerals', async (req, res) => {
+// GET all minerals
+router.get("/minerals", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM products ORDER BY id');
-    res.json(result.rows);
+    const { rows } = await pool.query("SELECT * FROM minerals ORDER BY id ASC");
+    res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Database error');
+    res.status(500).json({ error: "Failed to fetch minerals" });
   }
 });
 
-// Get one mineral including its images
-router.get('/minerals/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const mineral = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
-    const images = await pool.query('SELECT image_path FROM images WHERE product_id = $1', [id]);
-
-    if (mineral.rows.length === 0) {
-      return res.status(404).send('Mineral not found');
-    }
-
-    res.json({
-      ...mineral.rows[0],
-      images: images.rows
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Database error');
-  }
-});
-
-// Upload image for a mineral
-router.post('/minerals/:id/images', upload.single('photo'), async (req, res) => {
-  try {
-    const { id } = req.params;
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).send('No file uploaded');
-    }
-
-    const imagePath = path.join('uploads', file.filename);
-
-    // Dummy vector, 1280-dimensions of zeros
-    const dummyEmbedding = Array(1280).fill(0);
-
-    await pool.query(
-      'INSERT INTO images (product_id, image_path, embedding) VALUES ($1, $2, $3)',
-      [id, imagePath, dummyEmbedding]
-    );
-
-    res.status(201).send('Image uploaded');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Database error');
-  }
-});
-
-// Add a new mineral
-router.post('/minerals', upload.single('photo'), async (req, res) => {
+// POST a new mineral
+router.post("/minerals", upload.single("photo"), async (req, res) => {
   try {
     const { name, price, amount } = req.body;
-    const file = req.file;
+    const photo = req.file ? req.file.filename : null;
 
-    if (!name || !price || !amount) {
-      return res.status(400).send('Missing required fields');
-    }
+    const insertQuery = `
+      INSERT INTO minerals (name, price, amount, photo)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *
+    `;
+    const values = [name, price, amount, photo];
 
-    const result = await pool.query(
-      'INSERT INTO products (name, price, amount) VALUES ($1, $2, $3) RETURNING id',
-      [name, price, amount]
-    );
-
-    const newMineralId = result.rows[0].id;
-
-    if (file) {
-      const imagePath = path.join('uploads', file.filename);
-      const dummyEmbedding = Array(1280).fill(0);
-
-      await pool.query(
-        'INSERT INTO images (product_id, image_path, embedding) VALUES ($1, $2, $3)',
-        [newMineralId, imagePath, dummyEmbedding]
-      );
-    }
-
-    res.status(201).send('Mineral added');
+    const { rows } = await pool.query(insertQuery, values);
+    res.status(201).json(rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Database error');
+    res.status(500).json({ error: "Failed to add mineral" });
   }
 });
 

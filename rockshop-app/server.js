@@ -1,21 +1,22 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
+const app = express();
 const path = require('path');
 const routes = require('./routes');
+const multer = require('multer');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+// Serve public files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.use('/api', routes);
+// Serve uploaded images
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Start server
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Use routes
+app.use("/", routes);
+
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
