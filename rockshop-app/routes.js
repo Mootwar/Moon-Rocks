@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const db = require('./db'); // adjust path if your db.js is in a subfolder
 const { Pool } = require("pg");
 const pool = new Pool({
   host: "db",       // Docker Compose service name
@@ -65,6 +66,34 @@ router.post("/minerals", upload.single("photo"), async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to add mineral" });
+  }
+});
+
+router.patch('/api/minerals/:id', async (req, res) => {
+  const { price, amount } = req.body;
+  const { id } = req.params;
+
+  try {
+    const result = await db.query(
+      'UPDATE minerals SET price = $1, amount = $2 WHERE id = $3 RETURNING *',
+      [price, amount, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error updating mineral:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+router.delete('/api/minerals/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query('DELETE FROM minerals WHERE id = $1', [id]);
+    res.status(204).send(); // No content
+  } catch (err) {
+    console.error('Error deleting mineral:', err);
+    res.status(500).send('Server error');
   }
 });
 
