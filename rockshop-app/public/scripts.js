@@ -23,6 +23,7 @@ function displayMinerals(minerals) {
       <td>${mineral.name}</td>
       <td>$${parseFloat(mineral.price).toFixed(2)}</td>
       <td>${mineral.amount}</td>
+      <td>${mineral.weight}</td>
       <td><img src="/uploads/${mineral.photo}" alt="${mineral.name}" width="100"></td>
     `;
 
