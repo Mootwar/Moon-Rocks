@@ -7,9 +7,6 @@ const multer = require('multer');
 // Serve public files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve uploaded images
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
