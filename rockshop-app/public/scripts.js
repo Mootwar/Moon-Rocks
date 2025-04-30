@@ -1,11 +1,17 @@
 document.getElementById("fetch-minerals").addEventListener("click", loadMinerals);
 document.getElementById("add-mineral-form").addEventListener("submit", addMineral);
+document.getElementById("search-name").addEventListener("input", filterMinerals);
+document.getElementById("search-weight").addEventListener("input", filterMinerals);
+
+// Store full list for filtering
+let allMinerals = [];
 
 async function loadMinerals() {
   try {
     const response = await fetch("/minerals");
     const minerals = await response.json();
-    displayMinerals(minerals);
+    allMinerals = minerals;
+    displayMinerals(allMinerals);
   } catch (error) {
     console.error("Failed to load minerals:", error);
   }
@@ -32,17 +38,16 @@ function displayMinerals(minerals) {
     editBtn.classList.add('btn', 'btn-sm', 'btn-warning');
     editBtn.onclick = () => handleEdit(mineral);
 
-    const btnCell = document.createElement('td');
-    btnCell.appendChild(editBtn);
-    row.appendChild(btnCell);
-
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('btn', 'btn-sm', 'btn-danger', 'ms-1');
     deleteBtn.onclick = () => handleDelete(mineral.id);
 
+    const btnCell = document.createElement('td');
+    btnCell.appendChild(editBtn);
     btnCell.appendChild(deleteBtn);
 
+    row.appendChild(btnCell);
     tableBody.appendChild(row);
   });
 }
@@ -80,17 +85,20 @@ function handleEdit(mineral) {
     fetch(`/api/minerals/${mineral.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ price: parseFloat(newPrice), amount: parseInt(newAmount) })
+      body: JSON.stringify({
+        price: parseFloat(newPrice),
+        amount: parseInt(newAmount)
+      })
     })
-    .then(response => response.json())
-    .then(updated => {
-      alert(`Updated ${updated.name}`);
-      loadMinerals(); // Refresh the table
-    })
-    .catch(err => {
-      console.error('Error updating mineral:', err);
-      alert('Update failed');
-    });
+      .then(response => response.json())
+      .then(updated => {
+        alert(`Updated ${updated.name}`);
+        loadMinerals();
+      })
+      .catch(err => {
+        console.error('Error updating mineral:', err);
+        alert('Update failed');
+      });
   }
 }
 
@@ -99,16 +107,29 @@ function handleDelete(id) {
     fetch(`/api/minerals/${id}`, {
       method: 'DELETE'
     })
-    .then(response => {
-      if (response.ok) {
-        loadMinerals(); // Refresh table
-      } else {
+      .then(response => {
+        if (response.ok) {
+          loadMinerals();
+        } else {
+          alert('Delete failed');
+        }
+      })
+      .catch(err => {
+        console.error('Error deleting mineral:', err);
         alert('Delete failed');
-      }
-    })
-    .catch(err => {
-      console.error('Error deleting mineral:', err);
-      alert('Delete failed');
-    });
+      });
   }
+}
+
+function filterMinerals() {
+  const nameQuery = document.getElementById("search-name").value.toLowerCase();
+  const weightQuery = document.getElementById("search-weight").value;
+
+  const filtered = allMinerals.filter(mineral => {
+    const matchesName = nameQuery === "" || mineral.name.toLowerCase().includes(nameQuery);
+    const matchesWeight = weightQuery === "" || parseFloat(mineral.weight) === parseFloat(weightQuery);
+    return matchesName && matchesWeight;
+  });
+
+  displayMinerals(filtered);
 }

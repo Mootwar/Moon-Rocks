@@ -8,7 +8,7 @@ A portable **Node + PostgreSQL** stack that lets rock-shop owners catalog, searc
 
 ---
 
-## ✨ Features
+## Features
 
 * **PostgreSQL 16** with an example `minerals` table and seed data  
 * **Express 5** back-end (`/api/minerals`)  
@@ -18,7 +18,7 @@ A portable **Node + PostgreSQL** stack that lets rock-shop owners catalog, searc
 
 ---
 
-## 📦 Prerequisites
+## Prerequisites
 
 | Requirement | Notes |
 |-------------|-------|
@@ -29,7 +29,7 @@ A portable **Node + PostgreSQL** stack that lets rock-shop owners catalog, searc
 
 ---
 
-## 🚀 Quick-start
+## Quick-start
 
 ```bash
 git clone https://github.com/Mootwar/Moon-Rocks.git
