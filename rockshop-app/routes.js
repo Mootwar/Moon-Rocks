@@ -50,15 +50,15 @@ router.get("/minerals", async (req, res) => {
 // POST a new mineral
 router.post("/minerals", upload.single("photo"), async (req, res) => {
   try {
-    const { name, price, amount } = req.body;
+    const { name, price, amount, weight } = req.body;
     const photo = req.file ? req.file.filename : null;
 
     const insertQuery = `
-      INSERT INTO minerals (name, price, amount, photo)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO minerals (name, price, amount, weight, photo)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
-    const values = [name, price, amount, photo];
+    const values = [name, price, amount, weight, photo];
 
     const { rows } = await pool.query(insertQuery, values);
     res.status(201).json(rows[0]);

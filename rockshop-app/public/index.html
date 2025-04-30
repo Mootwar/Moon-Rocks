@@ -37,6 +37,7 @@
           <th>Name</th>
           <th>Price</th>
           <th>Amount</th>
+          <th>Weight</th>
           <th>Image</th>
         </tr>
       </thead>
@@ -60,6 +61,10 @@
         <label for="mineralAmount" class="form-label">Amount</label>
         <input type="number" class="form-control" id="mineralAmount" name="amount" required />
       </div>
+      <div class="mb-3">
+        <label for="mineralWeight" class="form-label">Weight (g)</label>
+        <input type="number" step="0.01" class="form-control" id="mineralWeight" name="weight" required />
+      </div>      
       <div class="mb-3">
         <label for="mineralImage" class="form-label">Product Image</label>
         <input type="file" class="form-control" id="mineralImage" name="photo" accept="image/*" />
