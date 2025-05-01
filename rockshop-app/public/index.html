@@ -1,56 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rock Shop Inventory</title>
-
-  <!-- Bootstrap CSS -->
-  <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
-    rel="stylesheet" 
-  >
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/styles.css" rel="stylesheet">
 </head>
-
-<body class="bg-light">
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Rock Shop</a>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="index.html">Rock Shop</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Inventory</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="add.html">Add Mineral</a>
+        </li>
+      </ul>
     </div>
   </nav>
 
-  <!-- Main Content -->
   <main class="container mt-4">
-    <h1>Rock Shop Inventory</h1>
-
-    <!-- Button to fetch minerals -->
+    <h1>Inventory</h1>
     <button id="fetch-minerals" class="btn btn-primary mb-3">Load Minerals</button>
 
-
-    <!-- Search -->
     <div class="row mb-3">
       <div class="col-md-6">
-        <input
-          type="text"
-          id="search-name"
-          class="form-control"
-          placeholder="Search by name"
-        />
+        <input type="text" id="search-name" class="form-control" placeholder="Search by name">
       </div>
       <div class="col-md-6">
-        <input
-          type="number"
-          id="search-weight"
-          class="form-control"
-          placeholder="Search by weight"
-        />
+        <input type="number" id="search-weight" class="form-control" placeholder="Search by weight">
       </div>
     </div>
 
-    <!-- Table to display minerals -->
     <table class="table table-striped" id="minerals-table">
       <thead>
         <tr>
@@ -65,45 +49,9 @@
       </thead>
       <tbody></tbody>
     </table>
-
-    <hr>
-
-    <!-- Form to add a new mineral -->
-    <h2>Add New Mineral</h2>
-    <form id="add-mineral-form" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="mineralName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="mineralName" name="name" required />
-      </div>
-      <div class="mb-3">
-        <label for="mineralPrice" class="form-label">Price ($)</label>
-        <input type="number" step="0.01" class="form-control" id="mineralPrice" name="price" required />
-      </div>
-      <div class="mb-3">
-        <label for="mineralAmount" class="form-label">Amount</label>
-        <input type="number" class="form-control" id="mineralAmount" name="amount" required />
-      </div>
-      <div class="mb-3">
-        <label for="mineralWeight" class="form-label">Weight (g)</label>
-        <input type="number" step="0.01" class="form-control" id="mineralWeight" name="weight" required />
-      </div>      
-      <div class="mb-3">
-        <label for="mineralImage" class="form-label">Product Image</label>
-        <input type="file" class="form-control" id="mineralImage" name="photo" accept="image/*" />
-      </div>
-      <button class="btn btn-success" type="submit">Add Mineral</button>
-    </form>
-
   </main>
 
-  <!-- Bootstrap Bundle JS (includes Popper) -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-  </script>
-
-  <!-- Your custom script -->
-  <script src="/scripts.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/scripts/inventory.js"></script>
 </body>
-
 </html>

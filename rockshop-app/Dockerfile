@@ -1,14 +1,21 @@
-# rockshop-app/Dockerfile
-FROM node:22-alpine AS builder
+# Dockerfile for Node.js backend with static frontend serving
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev     # production deps only
 
+# Install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy application files
 COPY . .
 
-# Environment (overridden by compose)
-ENV PORT=3000
+# Serve static files from public directory
+ENV NODE_ENV=production
 
+# Expose port
 EXPOSE 3000
+
+# Start the server
 CMD ["node", "server.js"]
