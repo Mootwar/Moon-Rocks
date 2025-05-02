@@ -21,7 +21,7 @@ exports.getMinerals = async (req, res) => {
 
 exports.addMineral = async (req, res) => {
   const { name, price, amount, weight } = req.body;
-  const photo = req.file ? `/uploads/${req.file.filename}` : null;
+  const photo = req.file ? req.file.filename : null;
 
   try {
     await pool.query(
