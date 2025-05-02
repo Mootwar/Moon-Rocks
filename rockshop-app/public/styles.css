@@ -42,11 +42,13 @@ h1, h2, h3, label {
 input, select, textarea, .form-control {
   background-color: #254050;
   color: var(--carolina-blue);
-  border: 1px solid var(--mint);
+  border: 1px solid var(--carolina-blue);
 }
 
-input::placeholder {
-  color: #a5cfdc;
+#search-name::placeholder,
+#search-weight::placeholder {
+  color: var(--carolina-blue);
+  opacity: 1; /* ensure full opacity */
 }
 
 .btn-primary {
