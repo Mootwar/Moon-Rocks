@@ -6,6 +6,7 @@
 - Assisted in drafting the **contract** for the project.
 - Created and worked on **presentation slides** for client meetings.
 - Learned and successfully **hosted the site on Firebase**.
+- Worked on backend database logic
 - Implemented key functionality, including:
   - **Searching** with weights and names simultaneously.
   - **Sorting** functionality for the inventory.
