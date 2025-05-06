@@ -21,7 +21,7 @@ exports.getMinerals = async (req, res) => {
 
 exports.addMineral = async (req, res) => {
   const { name, price, amount, weight } = req.body;
-  const photo = req.file ? path.join("/uploads", req.file.filename) : null;
+  const photo = req.file ? req.file.filename : null;
 
   try {
     await pool.query(
@@ -43,5 +43,21 @@ exports.deleteMineral = async (req, res) => {
   } catch (err) {
     console.error("Error deleting mineral:", err);
     res.status(500).send("Error deleting mineral");
+  }
+};
+
+exports.updateMineral = async (req, res) => {
+  const { id } = req.params;
+  const { name, price, amount, weight } = req.body;
+
+  try {
+    await pool.query(
+      "UPDATE minerals SET name = $1, price = $2, amount = $3, weight = $4 WHERE id = $5",
+      [name, price, amount, weight, id]
+    );
+    res.send("Mineral updated");
+  } catch (err) {
+    console.error("Error updating mineral:", err);
+    res.status(500).send("Error updating mineral");
   }
 };

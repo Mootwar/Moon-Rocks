@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static file serving
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public"))); // Serves everything in public
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads"))); // Explicit image route
 
 // File upload configuration
 const storage = multer.diskStorage({
@@ -31,6 +32,7 @@ const upload = multer({ storage });
 app.get("/minerals", db.getMinerals);
 app.post("/minerals", upload.single("photo"), db.addMineral);
 app.delete("/minerals/:id", db.deleteMineral);
+app.put("/minerals/:id", db.updateMineral);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

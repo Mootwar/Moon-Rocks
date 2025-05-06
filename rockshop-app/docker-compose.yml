@@ -25,7 +25,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./public:/rockshop-app/public
+      - ./public:/rockshop-app/public:ro
     environment:
       - NODE_ENV=development
 
