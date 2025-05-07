@@ -15,3 +15,13 @@
   - Provided general debugging support throughout the programming process.
 - Participated in client meetings to discuss the **project** and **expectations**.
 - Contributed to the **UI design** and development of the project.
+
+### Hector Ramirez Contributions to the Project
+
+- Wrote code in python.
+- Worked on presentation slides for client meetings.
+- Learned and worked on ML model that we decided not to use.
+- Developed the preprosesing of images.
+- Worked on the search by image
+- Contributed to the database design and development of the project.
+- Participated in client meetings to discuss the project and expectations.
