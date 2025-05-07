@@ -25,3 +25,20 @@
 - Worked on the search by image
 - Contributed to the database design and development of the project.
 - Participated in client meetings to discuss the project and expectations.
+
+### Quade Cunningham's Contribution to the Project
+
+- Helped draft and provided input on **Contract** for the project.
+- Wrote code in **JavaScript**, **HTML**, and **CSS**.
+- Designed and developed UI/UX for frontend.
+- Learned to create and manage a PostgreSQL database.
+- Created and developed Frontend and Backend parts of server.
+- Served as a point of contact with client.
+- Implemented key features, including:
+  - **CRUD Functionality**: Add Mineral, Load Mineral, Edit, and Delete.
+  - **Navigation Bar**: Seperated pages for less cluttered design.
+  - **Image Hosting**: Ability to display images for entries.
+  - **Docker Implementation**: Created a docker container for a contained environment, useful for development and deployment.
+- Assisted with debugging and fixing features.
+- Reworked code to better integrate other features.
+- Participated in client meetings to discuss the project and expectations.
