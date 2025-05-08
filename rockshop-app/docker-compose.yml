@@ -11,23 +11,20 @@ services:
     ports:
       - "5432:5432"
 
-  python-emb:
-    build: ./embed-svc
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-
   backend:
-    build: .
+    # point to the Dockerfile that now runs both Node & Python
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       - db
-      - python-emb
     ports:
-      - "3000:3000"
+      - "3000:3000"   # Express API & static site
+      - "5000:5000"   # Python embedding micro-service
     volumes:
-      - ./public:/rockshop-app/public:ro
+      - ./public:/rockshop-app/public
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
 
 volumes:
   db_data:

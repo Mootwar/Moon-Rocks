@@ -9,6 +9,15 @@ CREATE TABLE IF NOT EXISTS minerals (
     photo TEXT
 );
 
+CREATE TABLE embeddings (
+  id         SERIAL PRIMARY KEY,
+  product_id INTEGER    NOT NULL
+    REFERENCES minerals(id)  ON DELETE CASCADE,
+  embedding  JSONB      NOT NULL
+);
+
+CREATE INDEX ON embeddings(product_id);
+
 INSERT INTO minerals (name, price, amount, weight, photo) VALUES
 ('Quartz', 20.00, 1, 200.5, 'Quartz_Brésil.jpg'),
 ('Amethyst', 30.00, 2, 305.7, '1745976518693-Amatista_Laye_2.jpg'),
