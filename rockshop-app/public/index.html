@@ -21,7 +21,60 @@
   <main class="container mt-4">
     <h1>Inventory</h1>
     <button id="fetch-minerals" class="btn btn-primary mb-3">Load Minerals</button>
-
+    <section id="image-search">
+      <h2>Search by Image</h2>
+      <input type="file" id="searchImageFile" accept="image/*" />
+      <button id="searchImageBtn">Search</button>
+      <div id="searchResults"></div>
+    </section>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('searchImageBtn').onclick = async () => {
+        const fileInput = document.getElementById('searchImageFile');
+        if (!fileInput.files.length) {
+          alert('Choose an image first.');
+          return;
+        }
+        const form = new FormData();
+        form.append('image', fileInput.files[0]);
+    
+        // 1) Upload image to embed‐svc & get matches
+        const resp = await fetch('http://localhost:8000/query', {
+          method: 'POST',
+          body: form
+        });
+        if (!resp.ok) {
+          alert('Search failed: ' + await resp.text());
+          return;
+        }
+        const results = await resp.json();  // expect [{id,name,price,amount,image_path,cosine,euclid}, …]
+    
+        // 2) Render results
+        const container = document.getElementById('searchResults');
+        container.innerHTML = `
+          <h3>Top matches:</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Price</th><th>Score</th><th>Image</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results.map(r => `
+                <tr>
+                  <td>${r.id}</td>
+                  <td>${r.name}</td>
+                  <td>$${r.price.toFixed(2)}</td>
+                  <td>${r.cosine.toFixed(4)}</td>
+                  <td><img src="${r.image_path}" height="40"/></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`;
+            };
+      });
+    </script>
     <div class="row mb-3">
       <div class="col-md-6">
         <input type="text" id="search-name" class="form-control" placeholder="Search by name"/>
@@ -44,9 +97,9 @@
         </tr>
       </thead>
       <tbody></tbody>
-    </table>
+    </table>   
   </main>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/scripts/inventory.js"></script>
 </body>

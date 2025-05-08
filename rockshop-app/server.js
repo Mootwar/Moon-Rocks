@@ -1,38 +1,35 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
-const db = require("./routes");
+const routes = require("./routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Static file serving
-app.use(express.static(path.join(__dirname, "public"))); // Serves everything in public
-app.use("/uploads", express.static(path.join(__dirname, "public/uploads"))); // Explicit image route
-
-// File upload configuration
+// Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, "public", "uploads");
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    cb(null, uploadDir);
+    const dir = path.join(__dirname, "public", "uploads");
+    cb(null, dir);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
-  }
+  },
 });
-
 const upload = multer({ storage });
 
-// Mineral routes
-app.get("/minerals", db.getMinerals);
-app.post("/minerals", upload.single("photo"), db.addMineral);
-app.delete("/minerals/:id", db.deleteMineral);
-app.put("/minerals/:id", db.updateMineral);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
+// Routes
+app.get("/minerals", routes.getMinerals);
+
+// Note the upload.single("photo") middleware here:
+app.post("/minerals", upload.single("photo"), routes.addMineral);
+
+app.put("/minerals/:id", upload.none(), routes.updateMineral);
+app.delete("/minerals/:id", routes.deleteMineral);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

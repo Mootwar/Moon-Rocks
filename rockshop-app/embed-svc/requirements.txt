@@ -1,0 +1,6 @@
+torch
+torchvision
+pillow
+scikit-learn
+tabulate
+flask
