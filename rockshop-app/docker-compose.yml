@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:16-alpine
@@ -7,27 +9,22 @@ services:
       POSTGRES_DB: rockshop_inventory_db
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
+      - ./initdb:/docker-entrypoint-initdb.d:ro
     ports:
       - "5432:5432"
-
-  python-emb:
-    build: ./embed-svc
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
 
   backend:
     build: .
     depends_on:
       - db
-      - python-emb
     ports:
       - "3000:3000"
     volumes:
-      - ./public:/rockshop-app/public:ro
+      # Mount your project into /app; keep node_modules inside the container
+      - ./:/app
+      - /app/node_modules
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
 
 volumes:
   db_data:
