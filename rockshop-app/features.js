@@ -1,26 +1,80 @@
 // features.js
 const cv = require('@u4/opencv4nodejs');
+const fs = require('fs');
 
  // Extract a color‐histogram feature vector from an image file.
 function extractColorHistogram(imagePath) {
-  const src = cv.imread(imagePath);
-  // Hue Saturation Value
-  const hsv = src.cvtColor(cv.COLOR_BGR2HSV);
+  console.log("========= EXTRACT COLOR HISTOGRAM DEBUG =========");
+  console.log("OpenCV version:", cv.version);
+  console.log("Image path:", imagePath);
+  
+  try {
+    // Check if file exists
+    const stats = fs.statSync(imagePath);
+    console.log("File exists, size:", stats.size, "bytes");
+  } catch(err) {
+    console.error("File access error:", err.message);
+    throw new Error(`File not accessible: ${err.message}`);
+  }
 
-  // e.g.  8 bins for H, 12 for S, 3 for V  → total 8*12*3 = 288‐dim vector
-  // Convertion from BRG to HSV for better accuracy
-  const hist = cv.calcHist( // Computes a 3D histogram
-    hsv.splitChannels(), // Array of single channel mats = [H S V]
-    [0, 1, 2],
-    new cv.Mat(),  // no mask
-    [8, 12, 3],  // bin counts per channel
-    [0, 180, 0, 256, 0, 256] //Ranges per channel
-  );
-  // normalize to sum = 1
-  return hist
-    .normalize(1)    // L1 norm
-    .getDataAsArray() // 3d array
-    .flat();          // flatten to a single 288 vector
+  try {
+    // Read the image
+    console.log("Attempting to read image...");
+    const src = cv.imread(imagePath);
+    
+    // Check if the image was loaded properly
+    if (!src || src.empty) {
+      console.error("Failed to load image - empty or null");
+      throw new Error('Failed to load image');
+    }
+    
+    console.log("Image loaded successfully. Size:", src.rows, "×", src.cols);
+    
+    // Resize for consistency and efficiency
+    const resized = src.resize(64, 64);
+    console.log("Image resized to 64×64");
+    
+    // Convert to HSV color space
+    const hsv = resized.cvtColor(cv.COLOR_BGR2HSV);
+    console.log("HSV conversion successful");
+    
+    // Get simple statistics 
+    const means = hsv.mean();
+    console.log("HSV means:", means);
+    
+    // Create sections of the image and get statistics for each section
+    const features = [];
+    
+    // Divide image into 4×4 grid = 16 sections
+    const sectionWidth = Math.floor(resized.cols / 4);
+    const sectionHeight = Math.floor(resized.rows / 4);
+    
+    console.log("Extracting features from 4×4 grid sections");
+    
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        const section = hsv.getRegion(
+          new cv.Rect(x * sectionWidth, y * sectionHeight, sectionWidth, sectionHeight)
+        );
+        
+        const sectionMean = section.mean();
+        // Instead of spreading, access the properties directly
+        features.push(sectionMean.x, sectionMean.y, sectionMean.z);
+      }
+    }
+    
+    // Add global statistics - just the means since stddev isn't available
+    // Again, access the properties directly
+    features.push(means.x, means.y, means.z);
+    
+    console.log("Total feature vector length:", features.length);
+    console.log("========= EXTRACT COLOR HISTOGRAM COMPLETE =========");
+    
+    return features;
+  } catch (error) {
+    console.error(`Error in extractColorHistogram: ${error.message}`);
+    throw error;
+  }
 }
 
  // Extract an ORB keypoint descriptor vector.
