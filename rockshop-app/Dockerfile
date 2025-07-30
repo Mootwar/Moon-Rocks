@@ -1,38 +1,34 @@
-# Use Node.js v18 on Alpine
-FROM node:18-alpine
+FROM node:20-bullseye-slim
 
-# 1. Set working directory
+# Install OpenCV and dependencies
+RUN apt-get update && apt-get install -y \
+    libopencv-dev \
+    python3-opencv \
+    build-essential \
+    cmake \
+    git \
+    pkg-config \
+    python3 \
+    libopencv-contrib-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
 WORKDIR /app
 
-# 2. Install OpenCV system libs + build tools
-RUN apk add --no-cache --virtual .build-deps \
-      build-base \
-      cmake \
-      git \
-      python3-dev \
-      pkgconfig \
-      libjpeg-turbo-dev \
-      libpng-dev \
-      opencv-dev \
-    && apk add --no-cache \
-      python3 \
-      libjpeg-turbo \
-      libpng \
-      opencv
+# Copy package files
+COPY package*.json ./
 
-# 3. Disable opencv4nodejs autobuild (use system OpenCV)
-ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
+ENV OPENCV4NODEJS_AUTOBUILD_OPENCV_VERSION=4.8.0
+ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=0
 
-# 4. Install production JS deps
-COPY package.json package-lock.json ./
-RUN npm install --production
+# Install dependencies with build support
+RUN npm install --build-from-source
 
-# 5. Remove build deps to slim image
-RUN apk del .build-deps
-
-# 6. Copy the rest of your app
+# Copy app files
 COPY . .
 
-# 7. Expose port and launch
+# Expose port
 EXPOSE 3000
+
+# Start the app
 CMD ["node", "server.js"]

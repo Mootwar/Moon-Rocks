@@ -2,6 +2,10 @@
   "name": "rockshop-app",
   "version": "1.0.0",
   "main": "index.js",
+  "opencv4nodejs": {
+    "disableAutoBuild": false,
+    "autoBuildFlags": []
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -18,9 +22,15 @@
     "pgvector": "^0.1.4",
     "multer": "^1.4.5-lts.1",
     "form-data": "^4.0.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "@u4/opencv4nodejs": "^6.5.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
+  },
+  "@u4/opencv4nodejs": {
+    "opencvIncludeDir": "/usr/include/opencv4",
+    "opencvLibDir": "/usr/lib/x86_64-linux-gnu",
+    "opencvBinDir": "/usr/bin"
   }
 }
